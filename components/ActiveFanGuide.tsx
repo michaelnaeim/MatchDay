@@ -40,7 +40,6 @@ export default function ActiveFanGuide({
   const [booted, setBooted] = useState(false);
   const [scanIdx, setScanIdx] = useState(0);
   const [bootText, setBootText] = useState("");
-  const [slidersOpen, setSlidersOpen] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -100,19 +99,10 @@ export default function ActiveFanGuide({
               Route to match
             </button>
           )}
-          <button
-            type="button"
-            onClick={() => setSlidersOpen((v) => !v)}
-            className="text-[11px] font-medium px-3 py-1.5 rounded-full border border-white/10 text-white/50 hover:text-white hover:border-white/20 transition-colors"
-          >
-            {slidersOpen ? "Hide" : "Prefs"}
-          </button>
         </div>
       </div>
 
-      {slidersOpen && (
-        <PreferenceSliders prefs={prefs} onChange={onPrefsChange} collapsed={false} />
-      )}
+      <PreferenceSliders prefs={prefs} onChange={onPrefsChange} collapsed={false} />
 
       <div className="flex-1 overflow-y-auto sidebar-scroll px-4 py-4 space-y-3 min-h-0 bg-[#060810]/80">
         {showBoot && (

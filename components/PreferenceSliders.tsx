@@ -24,12 +24,12 @@ export default function PreferenceSliders({
     prefs.crowd < 30 ? "Quiet" : prefs.crowd < 65 ? "Authentic" : prefs.crowd < 85 ? "Mixed" : "Party";
 
   return (
-    <div className="border-b border-miro-border bg-miro-canvas">
+    <div className="border-b border-white/[0.06] bg-[#0a0c14]/90 shrink-0">
       {onToggle && (
         <button
           type="button"
           onClick={onToggle}
-          className="w-full flex items-center justify-between px-4 py-2.5 text-xs text-miro-ink-muted hover:text-miro-ink"
+          className="w-full flex items-center justify-between px-4 py-2.5 text-xs text-white/50 hover:text-white/80"
         >
           <span className="inline-flex items-center gap-2 uppercase tracking-wider font-medium">
             <Sliders className="w-3.5 h-3.5" />
@@ -40,30 +40,57 @@ export default function PreferenceSliders({
       )}
 
       {!collapsed && (
-        <div className="px-4 pb-4 space-y-4">
-          <div>
-            <label className="text-[11px] text-miro-ink-subtle uppercase tracking-wide font-medium">
-              Team
-            </label>
-            <select
-              value={prefs.team}
-              onChange={(e) => set("team", e.target.value)}
-              className="mt-1.5 w-full rounded-xl bg-white border border-miro-border px-3 py-2 text-sm text-miro-ink focus:outline-none focus:border-miro-purple focus:ring-2 focus:ring-miro-purple/10"
-            >
-              {TEAMS.map((t) => (
-                <option key={t.code} value={t.code}>
-                  {t.flag} {t.name}
-                </option>
-              ))}
-            </select>
+        <div className="px-4 pb-3 pt-1 space-y-3">
+          <div className="flex items-center gap-2 mb-1">
+            <Sliders className="w-3.5 h-3.5 text-[#a5b4fc]" />
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-white/40">
+              Trip preferences
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="text-[10px] text-white/40 uppercase tracking-wide font-medium">
+                Team
+              </label>
+              <select
+                value={prefs.team}
+                onChange={(e) => set("team", e.target.value)}
+                className="mt-1 w-full rounded-lg bg-[#111827] border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:border-[#6366f1]/50"
+              >
+                {TEAMS.map((t) => (
+                  <option key={t.code} value={t.code}>
+                    {t.flag} {t.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <div className="flex justify-between text-[10px] mb-1">
+                <span className="text-white/40 uppercase tracking-wide font-medium">
+                  Max travel
+                </span>
+                <span className="text-white/80 font-medium">{prefs.maxTravelMin} min</span>
+              </div>
+              <input
+                type="range"
+                min={15}
+                max={90}
+                step={5}
+                value={prefs.maxTravelMin}
+                onChange={(e) => set("maxTravelMin", Number(e.target.value))}
+                className="w-full h-1.5 rounded-full appearance-none bg-white/10 cursor-pointer"
+              />
+            </div>
           </div>
 
           <div>
-            <div className="flex justify-between text-[11px] mb-1.5">
-              <span className="text-miro-ink-subtle uppercase tracking-wide font-medium">
+            <div className="flex justify-between text-[10px] mb-1">
+              <span className="text-white/40 uppercase tracking-wide font-medium">
                 Crowd vibe
               </span>
-              <span className="text-miro-purple font-semibold">{crowdLabel}</span>
+              <span className="text-[#a5b4fc] font-semibold">{crowdLabel}</span>
             </div>
             <input
               type="range"
@@ -71,30 +98,12 @@ export default function PreferenceSliders({
               max={100}
               value={prefs.crowd}
               onChange={(e) => set("crowd", Number(e.target.value))}
-              className="w-full h-1.5 rounded-full appearance-none bg-miro-bg cursor-pointer"
+              className="w-full h-1.5 rounded-full appearance-none bg-white/10 cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-miro-ink-subtle mt-1">
+            <div className="flex justify-between text-[9px] text-white/30 mt-0.5">
               <span>Quiet</span>
               <span>Party</span>
             </div>
-          </div>
-
-          <div>
-            <div className="flex justify-between text-[11px] mb-1.5">
-              <span className="text-miro-ink-subtle uppercase tracking-wide font-medium">
-                Max travel
-              </span>
-              <span className="text-miro-ink font-medium">{prefs.maxTravelMin} min</span>
-            </div>
-            <input
-              type="range"
-              min={15}
-              max={90}
-              step={5}
-              value={prefs.maxTravelMin}
-              onChange={(e) => set("maxTravelMin", Number(e.target.value))}
-              className="w-full h-1.5 rounded-full appearance-none bg-miro-bg cursor-pointer"
-            />
           </div>
 
           <div className="flex flex-wrap gap-2">
@@ -110,7 +119,7 @@ export default function PreferenceSliders({
             />
           </div>
 
-          <p className="text-[10px] text-miro-ink-subtle">
+          <p className="text-[10px] text-white/30">
             Starting from {prefs.originLabel}
           </p>
         </div>
@@ -134,8 +143,8 @@ function Toggle({
       onClick={onClick}
       className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
         on
-          ? "bg-miro-purple-soft border-miro-purple/30 text-miro-purple"
-          : "bg-white border-miro-border text-miro-ink-muted hover:border-miro-ink-subtle"
+          ? "bg-[#6366f1]/20 border-[#6366f1]/40 text-[#a5b4fc]"
+          : "bg-white/[0.04] border-white/10 text-white/50 hover:border-white/20 hover:text-white/70"
       }`}
     >
       {label}
