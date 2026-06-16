@@ -129,6 +129,75 @@ body {
   }
 }
 
+.live-wire-fire {
+  position: relative;
+}
+
+.live-wire-fire-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 53, 0.14) 0%,
+    rgba(245, 197, 24, 0.1) 40%,
+    rgba(99, 102, 241, 0.12) 100%
+  );
+  pointer-events: none;
+  animation: wireGlow 4s ease-in-out infinite;
+}
+
+@keyframes wireGlow {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(90deg, transparent, black 3%, black 97%, transparent);
+}
+
+.live-wire-vscroll {
+  animation: wireScrollDown 28s linear infinite;
+}
+
+.live-wire-vscroll:hover {
+  animation-play-state: paused;
+}
+
+.live-wire-vmask {
+  mask-image: linear-gradient(180deg, transparent, black 8%, black 92%, transparent);
+}
+
+@keyframes wireScrollDown {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.live-wire-row {
+  transition: border-color 0.2s;
+}
+
+.live-wire-row:hover {
+  border-color: rgba(245, 197, 24, 0.25);
+}
+
+.split-divider {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(99, 102, 241, 0.35) 50%,
+    transparent
+  );
+}
+
 input[type="range"] {
   accent-color: #6366f1;
 }

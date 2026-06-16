@@ -76,8 +76,8 @@ export default function ActiveFanGuide({
   const showPrompts = booted && messages.length === 0 && !loading;
 
   return (
-    <div className="relative rounded-2xl p-[1px] bg-gradient-to-r from-[#2563eb] via-[#6366f1] to-[#16a34a] shadow-[0_0_60px_rgba(37,99,235,0.12)]">
-      <div className="flex flex-col rounded-2xl bg-[#080a12] overflow-hidden">
+    <div className="relative rounded-2xl p-[1px] bg-gradient-to-r from-[#2563eb] via-[#6366f1] to-[#16a34a] shadow-[0_0_40px_rgba(37,99,235,0.1)] h-full min-h-0 flex flex-col">
+      <div className="flex flex-col rounded-2xl bg-[#080a12] overflow-hidden h-full min-h-0">
       <div className="flex items-center justify-between gap-2 px-4 py-3.5 border-b border-white/[0.06] bg-gradient-to-r from-[#2563eb]/10 via-transparent to-[#16a34a]/10">
         <div className="flex items-center gap-2.5">
           <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#2563eb] to-[#6366f1] flex items-center justify-center border border-white/20">
@@ -114,7 +114,7 @@ export default function ActiveFanGuide({
         <PreferenceSliders prefs={prefs} onChange={onPrefsChange} collapsed={false} />
       )}
 
-      <div className="flex-1 overflow-y-auto sidebar-scroll px-4 py-4 space-y-3 min-h-[200px] max-h-[320px] bg-[#060810]/80">
+      <div className="flex-1 overflow-y-auto sidebar-scroll px-4 py-4 space-y-3 min-h-0 bg-[#060810]/80">
         {showBoot && (
           <Bubble role="assistant">
             {bootText}
@@ -180,7 +180,7 @@ export default function ActiveFanGuide({
         <div ref={bottomRef} />
       </div>
 
-      <div className="p-4 border-t border-white/[0.06] bg-[#0a0c14]">
+      <div className="p-4 border-t border-white/[0.06] bg-[#0a0c14] shrink-0">
         <div className="flex gap-2">
           <input
             value={input}
