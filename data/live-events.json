@@ -1,0 +1,64 @@
+[
+  {
+    "id": "eb-1",
+    "source": "eventbrite",
+    "title": "Les Bleus Watch Party — France vs Senegal",
+    "team": "FRA",
+    "zone": "secaucus",
+    "zoneName": "Secaucus, NJ",
+    "url": "https://www.eventbrite.com"
+  },
+  {
+    "id": "eb-2",
+    "source": "eventbrite",
+    "title": "Lions of Teranga — Senegal Fan Zone",
+    "team": "SEN",
+    "zone": "harlem",
+    "zoneName": "Harlem",
+    "url": "https://www.eventbrite.com"
+  },
+  {
+    "id": "luma-1",
+    "source": "luma",
+    "title": "Alliance Française Live Screening",
+    "team": "FRA",
+    "zone": "ues",
+    "zoneName": "Upper East Side",
+    "url": "https://lu.ma"
+  },
+  {
+    "id": "luma-2",
+    "source": "luma",
+    "title": "Bed-Stuy Senegal Street Watch",
+    "team": "SEN",
+    "zone": "bedstuy",
+    "zoneName": "Bed-Stuy",
+    "url": "https://lu.ma"
+  },
+  {
+    "id": "reddit-1",
+    "source": "reddit",
+    "title": "r/nyc — Senegal watch on Nostrand Ave",
+    "team": "SEN",
+    "zone": "bedstuy",
+    "zoneName": "Bed-Stuy",
+    "url": "https://reddit.com/r/nyc"
+  },
+  {
+    "id": "reddit-2",
+    "source": "reddit",
+    "title": "r/nyc — French crowd Yorkville bistros full",
+    "team": "FRA",
+    "zone": "yorkville",
+    "zoneName": "Yorkville",
+    "url": "https://reddit.com/r/nyc"
+  },
+  {
+    "id": "ics-1",
+    "source": "ics",
+    "title": "French Cultural Center match screening",
+    "team": "FRA",
+    "zone": "yorkville",
+    "zoneName": "Yorkville"
+  }
+]
