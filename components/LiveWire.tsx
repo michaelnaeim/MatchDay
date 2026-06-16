@@ -84,7 +84,7 @@ export default function LiveWire({ feed, teamCode }: LiveWireProps) {
     <div className="live-wire-fire shrink-0 rounded-2xl overflow-hidden border border-white/[0.08] shadow-panel">
       <div className="live-wire-fire-bg" />
 
-      <div className="relative flex items-center justify-between gap-3 px-4 py-2 border-b border-white/[0.06] bg-black/30">
+      <div className="relative flex items-center justify-between gap-2 px-3 py-1.5 border-b border-white/[0.06] bg-black/30">
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute h-full w-full rounded-full bg-[#FF3B30] opacity-75" />
@@ -103,7 +103,7 @@ export default function LiveWire({ feed, teamCode }: LiveWireProps) {
         </span>
       </div>
 
-      <div className="relative h-[80px] overflow-hidden bg-black/25 live-wire-vmask">
+      <div className="relative h-[64px] overflow-hidden bg-black/25 live-wire-vmask">
         <div className="live-wire-vscroll px-3 py-2 space-y-2">
           {doubled.map((item, i) => (
             <WireRow key={`${item.id}-${i}`} item={item} />
