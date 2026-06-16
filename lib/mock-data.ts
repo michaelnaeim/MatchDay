@@ -8,6 +8,7 @@ import type {
 
 export const TEAMS: Team[] = [
   { code: "FRA", name: "France", flag: "🇫🇷", color: "#0055a4" },
+  { code: "SEN", name: "Senegal", flag: "🇸🇳", color: "#00853f" },
   { code: "MEX", name: "Mexico", flag: "🇲🇽", color: "#006847" },
   { code: "BRA", name: "Brazil", flag: "🇧🇷", color: "#009c3b" },
   { code: "USA", name: "United States", flag: "🇺🇸", color: "#3c3b6e" },
@@ -150,6 +151,69 @@ export const MOCK_PLACES: GatheringPlace[] = [
     kitchenOpenLate: false,
   },
   {
+    id: "sen-1",
+    name: "Lions of Teranga — Harlem Fan Zone",
+    lat: 40.8116,
+    lng: -73.9465,
+    teamTags: ["SEN"],
+    crowdLevel: "high",
+    vibe: "party",
+    confidence: "confirmed",
+    source: "eventbrite",
+    sourceUrl: "https://www.eventbrite.com",
+    languages: ["fr", "en", "wo"],
+    neighborhood: "Harlem",
+    description:
+      "Senegal supporters hub — live fan chat is surging here. Big screens, drums, expect a line by 6:30.",
+    arriveBy: "6:00 PM",
+    expectedPeak: "6:35 PM",
+    adaAccessible: true,
+    price: "$",
+    kitchenOpenLate: true,
+  },
+  {
+    id: "sen-2",
+    name: "Bed-Stuy Senegal Street Watch",
+    lat: 40.6831,
+    lng: -73.9389,
+    teamTags: ["SEN"],
+    crowdLevel: "high",
+    vibe: "authentic",
+    confidence: "community",
+    source: "reddit",
+    sourceUrl: "https://reddit.com/r/nyc",
+    languages: ["en", "fr"],
+    neighborhood: "Bed-Stuy, Brooklyn",
+    description:
+      "Community screen on Fulton — Reddit tip from the last hour. Street energy, no cover.",
+    arriveBy: "6:15 PM",
+    expectedPeak: "6:45 PM",
+    adaAccessible: false,
+    price: "$",
+    kitchenOpenLate: false,
+  },
+  {
+    id: "sen-3",
+    name: "Dakar House Screening",
+    lat: 40.7285,
+    lng: -73.7945,
+    teamTags: ["SEN"],
+    crowdLevel: "medium",
+    vibe: "quiet",
+    confidence: "likely",
+    source: "luma",
+    sourceUrl: "https://lu.ma",
+    languages: ["fr", "en"],
+    neighborhood: "Flushing, Queens",
+    description:
+      "Quieter diaspora watch — seated room, shorter wait than Harlem if you want calm.",
+    arriveBy: "6:30 PM",
+    expectedPeak: "6:50 PM",
+    adaAccessible: true,
+    price: "$",
+    kitchenOpenLate: false,
+  },
+  {
     id: "mex-1",
     name: "Mexico House Watch Fiesta",
     lat: 40.7468,
@@ -220,7 +284,10 @@ export function mockGatheringsResponse(
   filters: GatheringsFilters
 ): GatheringsResponse {
   const places = filterPlaces(MOCK_PLACES, filters.team, filters.intent);
-  const match = filters.team === "FRA" ? TODAY_MATCH : null;
+  const match =
+    filters.team === "FRA" || filters.team === "SEN" || filters.team === "USA"
+      ? TODAY_MATCH
+      : null;
   return {
     places,
     match,

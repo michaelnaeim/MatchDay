@@ -15,6 +15,7 @@ import MapPanel from "@/components/MapPanel";
 import MatchStrip from "@/components/MatchStrip";
 import LiveWire from "@/components/LiveWire";
 import LiveBadge from "@/components/LiveBadge";
+import PreferenceSliders from "@/components/PreferenceSliders";
 
 const NYC_CENTER: [number, number] = [40.758, -73.985];
 
@@ -142,41 +143,31 @@ export default function HomePage() {
   return (
     <div className="h-screen flex flex-col bg-miro-bg overflow-hidden">
       <header className="shrink-0 border-b border-white/[0.06] bg-[#0a0c14]/95 backdrop-blur-xl z-50">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5 min-w-0 shrink-0">
-            <MatchDayLogo />
-            <div className="min-w-0">
-              <h1 className="text-sm font-semibold text-white tracking-tight">Match Day</h1>
-              <p className="text-[10px] text-white/35 truncate">NYC fan intelligence</p>
+        <div className="max-w-[1920px] mx-auto px-4 sm:px-6 py-3">
+          <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] items-center gap-3 lg:gap-6">
+            <div className="flex items-center gap-2.5 justify-center lg:justify-start">
+              <MatchDayLogo />
+              <div>
+                <h1 className="text-sm font-semibold text-white tracking-tight">Match Day</h1>
+                <p className="text-[10px] text-white/35">NYC fan intelligence</p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 justify-end">
-            <MatchStrip />
-            <LiveBadge updatedAt={updatedAt} />
+
+            <div className="w-full min-w-0 px-0 sm:px-4">
+              <MatchStrip />
+            </div>
+
+            <div className="flex justify-center lg:justify-end">
+              <LiveBadge updatedAt={updatedAt} />
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col min-h-0 max-w-[1600px] w-full mx-auto px-3 sm:px-5 py-2 gap-2">
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_1px_1fr] gap-0 min-h-0 rounded-2xl overflow-hidden border border-white/[0.06] bg-[#080a12]/50">
-          <div className="min-h-[320px] lg:min-h-0 h-full flex flex-col p-2 sm:p-2.5">
-            <ActiveFanGuide
-              prefs={prefs}
-              onPrefsChange={setPrefs}
-              messages={messages}
-              loading={chatLoading}
-              onSend={handleSend}
-              onSelectPlace={setSelectedId}
-              onAskRoute={() => {
-                setRouteMode(true);
-                handleSend("How do I get to the match from Chelsea?");
-              }}
-            />
-          </div>
-
-          <div className="hidden lg:block split-divider w-px shrink-0" aria-hidden />
-
-          <div className="min-h-[320px] lg:min-h-0 h-full flex flex-col p-2 sm:p-2.5 border-t lg:border-t-0 border-white/[0.06]">
+      <main className="flex-1 flex flex-col min-h-0 w-full mx-auto px-2 sm:px-4 py-2">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-2 min-h-0 h-full rounded-2xl overflow-hidden border border-white/[0.06] bg-[#080a12]/50">
+          {/* Map */}
+          <div className="min-h-[40vh] lg:min-h-0 h-full flex flex-col p-1.5 sm:p-2">
             <MapPanel
               places={places}
               match={match}
@@ -191,9 +182,29 @@ export default function HomePage() {
               mounted={mapMounted}
             />
           </div>
-        </div>
 
-        <LiveWire feed={live?.feed ?? []} teamCode={prefs.team} />
+          {/* Preferences, chat (hero), live fan chat */}
+          <div className="min-h-0 h-full flex flex-col gap-2 p-1.5 sm:p-2 border-t lg:border-t-0 lg:border-l border-white/[0.06] overflow-hidden">
+            <div className="shrink-0 rounded-xl border border-[#6366f1]/25 bg-[#0a0c14] overflow-hidden shadow-[0_0_24px_rgba(99,102,241,0.1)]">
+              <PreferenceSliders prefs={prefs} onChange={setPrefs} collapsed={false} />
+            </div>
+            <div className="flex-[1.5] min-h-[55vh] lg:min-h-0 flex flex-col overflow-hidden">
+              <ActiveFanGuide
+                messages={messages}
+                loading={chatLoading}
+                onSend={handleSend}
+                onSelectPlace={setSelectedId}
+                onAskRoute={() => {
+                  setRouteMode(true);
+                  handleSend("How do I get to the match from Chelsea?");
+                }}
+              />
+            </div>
+            <div className="shrink-0">
+              <LiveWire feed={live?.feed ?? []} teamCode={prefs.team} />
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );

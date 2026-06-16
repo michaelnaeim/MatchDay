@@ -1,6 +1,15 @@
 import type { GatheringPlace, Match } from "./types";
 import { MOCK_PLACES, TEAMS, TODAY_MATCH, filterPlaces } from "./mock-data";
 import { isTransitQuery, planTransitToMatch } from "./match-route";
+import { FEATURED_MATCH } from "./live-simulation";
+import {
+  crowdLabel,
+  defaultRivalFor,
+  isRoastQuery,
+  pickRoastLine,
+  teamFlag,
+  teamName,
+} from "./rival-banter";
 
 export interface UserPreferences {
   team: string;
@@ -9,6 +18,12 @@ export interface UserPreferences {
   accessibleOnly: boolean;
   nativeLanguage: boolean;
   originLabel: string;
+  /** Prefer spots with only your team's fans */
+  ownFansOnly: boolean;
+  /** Playful rival trash-talk in replies */
+  rivalRoast: boolean;
+  /** Team to clown on in banter */
+  rivalTeam: string;
 }
 
 export interface TransitPlan {
@@ -71,7 +86,15 @@ function scorePlace(
   const crowdPref = prefs.crowd;
   const crowdVal =
     place.crowdLevel === "high" ? 90 : place.crowdLevel === "medium" ? 50 : 15;
-  score -= Math.abs(crowdVal - crowdPref) * 0.4;
+  score -= Math.abs(crowdVal - crowdPref) * 0.55;
+  if (prefs.crowd > 75 && place.crowdLevel === "high") score += 18;
+  if (prefs.crowd < 30 && place.crowdLevel === "low") score += 12;
+
+  if (prefs.ownFansOnly) {
+    if (place.teamTags.length === 1 && place.teamTags[0] === prefs.team) score += 22;
+    if (place.teamTags.includes("neutral")) score -= 15;
+    if (place.teamTags.includes(prefs.rivalTeam)) score -= 100;
+  }
 
   if (prefs.accessibleOnly && !place.adaAccessible) score -= 80;
   if (prefs.nativeLanguage) {
@@ -213,16 +236,172 @@ function uid(): string {
   return `id-${Math.random().toString(36).slice(2, 11)}`;
 }
 
+type QueryKind = "transit" | "live" | "watch" | "greeting" | "roast";
+
+function detectQueryKind(message: string): QueryKind {
+  const m = message.toLowerCase();
+  if (isRoastQuery(message)) return "roast";
+  if (isTransitQuery(message)) return "transit";
+  if (
+    /heat|surge|live fan|pulse|where.*hot|eventbrite|reddit|luma|map/.test(m) &&
+    !/watch party|where.*watch/.test(m)
+  ) {
+    return "live";
+  }
+  if (/^(hi|hello|hey|help|what can you)/.test(m)) return "greeting";
+  return "watch";
+}
+
+function teamFromMessage(message: string, fallback: string): string {
+  const m = message.toLowerCase();
+  if (/senegal|teranga|lions|🇸🇳|harlem|bed-stuy|bedstuy/.test(m)) return "SEN";
+  if (/france|french|bleu|les bleus|🇫🇷|yorkville|metlife|meadowlands/.test(m)) return "FRA";
+  if (/mexico|mexican|🇲🇽/.test(m)) return "MEX";
+  if (/brazil|brazilian|🇧🇷/.test(m)) return "BRA";
+  if (/usa|american|🇺🇸/.test(m)) return "USA";
+  if (/argentina|🇦🇷/.test(m)) return "ARG";
+  return fallback;
+}
+
+function neighborhoodFromMessage(message: string): string | null {
+  const m = message.toLowerCase();
+  if (/harlem/.test(m)) return "Harlem";
+  if (/bed-stuy|bedstuy|brooklyn/.test(m)) return "Bed-Stuy";
+  if (/yorkville|ues|upper east/.test(m)) return "Yorkville";
+  if (/secaucus|meadowlands|metlife|nj|jersey/.test(m)) return "Secaucus";
+  if (/queens|flushing/.test(m)) return "Queens";
+  if (/chelsea|manhattan/.test(m)) return "Manhattan";
+  return null;
+}
+
+function livePulseReply(prefs: UserPreferences): string {
+  const team = teamLabel(prefs.team);
+  const zones =
+    prefs.team === "SEN"
+      ? "**Harlem** and **Bed-Stuy** are surging on the map — Reddit + Eventbrite signals in the last hour."
+      : prefs.team === "FRA"
+        ? "**Secaucus/Meadowlands** and **Yorkville** are hottest — Eventbrite watch parties + French bistro overflow."
+        : `Fan heat is clustering around **${team}**-tagged zones on the map.`;
+
+  return `**Live city pulse** · France **2–1** Senegal · ${FEATURED_MATCH.minute}' at MetLife\n\n${zones}\n\nCheck the **live fan chat** strip for real-time chatter, and the map pulses for neighborhood heat. Ask me *where to watch* and I'll pin a **Watch Contract** with transit from **${prefs.originLabel}**.`;
+}
+
+function greetingReply(prefs: UserPreferences): string {
+  const rival = teamName(prefs.rivalTeam);
+  const roastHint = prefs.rivalRoast
+    ? `\n\n🔥 **Rival roast mode** is ON — I'll clown on **${rival}** fans when it helps.`
+    : "";
+  const fansHint = prefs.ownFansOnly
+    ? `\n\n🛡️ **Fans** — skipping mixed bars and ${rival} zones.`
+    : "";
+  return `I'm your **Match Day guide** — live map heat + your sliders → **Watch Contract** with transit from **${prefs.originLabel}**.${fansHint}${roastHint}\n\n**Tonight:** 🇫🇷 France **2–1** 🇸🇳 Senegal at **MetLife** (${FEATURED_MATCH.minute}').\n\nTry:\n• *Packed French bar — no rival fans*\n• *Roast Senegal and find Les Bleus territory*\n• *How do I get to MetLife without Penn Station?*`;
+}
+
+function roastReply(prefs: UserPreferences): string {
+  const line = pickRoastLine(prefs.team, prefs.rivalTeam);
+  const my = teamName(prefs.team);
+  const rival = teamName(prefs.rivalTeam);
+  return `**Rival report** · ${teamFlag(prefs.team)} ${my} vs ${teamFlag(prefs.rivalTeam)} ${rival}\n\n${line}\n\n${prefs.ownFansOnly ? "Your **Fans** filter is keeping you out of rival watch zones — chef's kiss." : "Toggle **Fans** if you want zero rival energy in the room."}\n\nWant a spot to match the smack talk? Ask *where to watch* and I'll pin it.`;
+}
+
+function buildWatchReply(
+  message: string,
+  prefs: UserPreferences,
+  primary: GatheringPlace,
+  backup: GatheringPlace | undefined,
+  transit: TransitPlan,
+  match: Match | null
+): string {
+  const team = teamLabel(prefs.team);
+  const crowdWord = crowdLabel(prefs.crowd);
+  const hood = neighborhoodFromMessage(message);
+  const liveCtx =
+    primary.source === "eventbrite"
+      ? "Confirmed on **Eventbrite** — map heat aligns."
+      : primary.source === "reddit"
+        ? "**r/nyc** signal in the last hour — verify before you go."
+        : primary.source === "luma"
+          ? "**Luma** listing — RSVP recommended."
+          : "Curated fan intel for match day.";
+
+  let content = `**Watch Contract** · ${team} fans · ${crowdWord} vibe\n`;
+  if (match) {
+    content += `Match context: **${match.venueName}** is live — this spot keeps you in the fan zone without the stadium crush.\n\n`;
+  }
+  if (hood) {
+    content += `You asked about **${hood}** — here's the best fit within your **${prefs.maxTravelMin} min** travel cap:\n\n`;
+  }
+
+  content += `**Primary — ${primary.name}**\n`;
+  content += `${primary.neighborhood} · ${liveCtx}\n`;
+  content += `${primary.description}\n`;
+  content += `Arrive **${primary.arriveBy ?? "before kickoff"}** · ${primary.confidence === "confirmed" ? "✓ Confirmed" : "Likely / community tip"}\n`;
+  if (primary.adaAccessible) content += `♿ Step-free / ADA friendly\n`;
+  content += `\n`;
+
+  if (backup) {
+    content += `**Backup — ${backup.name}** (${backup.neighborhood})\n`;
+    content += `${backup.crowdLevel === "low" ? "Shorter lines" : "Different energy"} if ${primary.name.split("—")[0].trim()} is full.\n\n`;
+  }
+
+  content += `**Getting there from ${prefs.originLabel}**\n`;
+  content += `Leave **${transit.leaveBy}** · ~**${transit.durationMin} min**\n`;
+  transit.steps.slice(0, 3).forEach((s, i) => {
+    content += `${i + 1}. ${s}\n`;
+  });
+  if (transit.warning) content += `\n⚠️ ${transit.warning}\n`;
+
+  if (prefs.ownFansOnly) {
+    content += `\n🛡️ **Fans** — filtered out ${teamName(prefs.rivalTeam)}-leaning spots.\n`;
+  }
+  if (prefs.rivalRoast) {
+    content += `\n🔥 **Rival roast:** ${pickRoastLine(prefs.team, prefs.rivalTeam)}\n`;
+  }
+
+  content += `\nPinned on your map — tap the card or ask for **route to MetLife** if you're heading to the stadium.`;
+  return content;
+}
+
 export function generateChatReply(
   message: string,
   prefs: UserPreferences
 ): { reply: ChatMessage; ranked: GatheringPlace[]; showRouteToMatch?: boolean } {
+  const effectivePrefs = {
+    ...prefs,
+    team: teamFromMessage(message, prefs.team),
+  };
   const match =
-    prefs.team === "FRA" || prefs.team === "USA" ? TODAY_MATCH : null;
+    effectivePrefs.team === "FRA" ||
+    effectivePrefs.team === "SEN" ||
+    effectivePrefs.team === "USA"
+      ? TODAY_MATCH
+      : null;
+  const kind = detectQueryKind(message);
 
-  if (isTransitQuery(message) && match) {
+  if (kind === "greeting") {
+    return {
+      reply: { id: uid(), role: "assistant", content: greetingReply(effectivePrefs) },
+      ranked: [],
+    };
+  }
+
+  if (kind === "roast") {
+    return {
+      reply: { id: uid(), role: "assistant", content: roastReply(effectivePrefs) },
+      ranked: [],
+    };
+  }
+
+  if (kind === "live") {
+    return {
+      reply: { id: uid(), role: "assistant", content: livePulseReply(effectivePrefs) },
+      ranked: [],
+    };
+  }
+
+  if (kind === "transit" && match) {
     const transit = planTransitToMatch(match);
-    const content = `**Route to ${match.venueName}** from ${prefs.originLabel}\n\nLeave by **${transit.leaveBy}** (~${transit.durationMin} min).\n\n${transit.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}${transit.warning ? `\n\n⚠️ ${transit.warning}` : ""}\n\nTap **Get to the match** on the map — the yellow route is pinned for you.`;
+    const content = `**Stadium run** · ${match.venueName}\n\n🇫🇷 **2–1** 🇸🇳 · ${FEATURED_MATCH.minute}' · leave **${prefs.originLabel}** by **${transit.leaveBy}** (~${transit.durationMin} min)\n\n${transit.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}${transit.warning ? `\n\n⚠️ ${transit.warning}` : ""}\n\nThe **yellow route** is on your map. Stadium gates get brutal after 6:30 — this path skips the worst of Penn when you can.`;
 
     return {
       reply: {
@@ -236,42 +415,32 @@ export function generateChatReply(
     };
   }
 
-  const { primary, backup, ranked } = pickRecommendations(prefs, message);
+  const { primary, backup, ranked } = pickRecommendations(effectivePrefs, message);
 
   if (!primary) {
     return {
       reply: {
         id: uid(),
         role: "assistant",
-        content:
-          "I couldn't find a spot for that team yet. Try another team or widen your travel time slider.",
+        content: `No strong **${teamLabel(effectivePrefs.team)}** watch spots match your sliders yet. Widen **max travel** or switch team — live fan chat may have fresh Reddit tips.`,
       },
       ranked: [],
     };
   }
 
   const transit = planTransit(primary, match);
-  const crowdWord =
-    prefs.crowd < 30 ? "quieter" : prefs.crowd > 70 ? "high-energy" : "balanced";
-
-  let content = `Here's your **Watch Contract** for ${teamLabel(prefs.team)} fans.\n\n`;
-  content += `**Primary — ${primary.name}** (${primary.neighborhood})\n`;
-  content += `${primary.description}\n`;
-  content += `Arrive by **${primary.arriveBy ?? "before kickoff"}** · ${primary.confidence === "confirmed" ? "Confirmed event" : "Likely fan spot"}\n\n`;
-
-  if (backup) {
-    content += `**Backup — ${backup.name}** if lines are long (${backup.neighborhood}, ${backup.crowdLevel === "low" ? "quieter" : "moderate"}).\n\n`;
-  }
-
-  content += `**Transit from ${prefs.originLabel}**\n`;
-  content += `Leave by **${transit.leaveBy}** (~${transit.durationMin} min)\n`;
-  if (transit.warning) content += `⚠️ ${transit.warning}\n`;
-
-  content += `\nI tuned this for **${crowdWord}** vibes based on your sliders.`;
+  const content = buildWatchReply(
+    message,
+    effectivePrefs,
+    primary,
+    backup,
+    transit,
+    match
+  );
 
   return {
     reply: {
-      id: crypto.randomUUID(),
+      id: uid(),
       role: "assistant",
       content,
       recommendation: {
@@ -286,17 +455,20 @@ export function generateChatReply(
 }
 
 export const SUGGESTED_PROMPTS = [
-  "How do I get to the match from Chelsea?",
-  "Where are French fans gathering near MetLife?",
-  "Quiet spot with good screens — no long lines",
-  "Senegal fans in Brooklyn tonight",
+  "Packed French bar — Fans only, no rivals",
+  "Roast Senegal fans & find Les Bleus territory",
+  "Absolute chaos watch party near MetLife",
+  "How do I get to MetLife without Penn Station?",
 ];
 
 export const DEFAULT_PREFS: UserPreferences = {
   team: "FRA",
-  crowd: 55,
+  crowd: 72,
   maxTravelMin: 45,
   accessibleOnly: false,
   nativeLanguage: true,
   originLabel: ORIGIN.label,
+  ownFansOnly: true,
+  rivalRoast: true,
+  rivalTeam: "SEN",
 };

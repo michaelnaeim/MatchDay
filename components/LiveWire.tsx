@@ -92,7 +92,7 @@ export default function LiveWire({ feed, teamCode }: LiveWireProps) {
           </span>
           <Radio className="w-3.5 h-3.5 text-[#F5C518]" />
           <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#F5C518]">
-            Live fan wire
+            Live fan chat
           </span>
           <span className="text-[10px] text-white/35 hidden sm:inline">
             Eventbrite · Reddit · Luma · fan pulse
@@ -103,7 +103,7 @@ export default function LiveWire({ feed, teamCode }: LiveWireProps) {
         </span>
       </div>
 
-      <div className="relative h-[120px] overflow-hidden bg-black/25 live-wire-vmask">
+      <div className="relative h-[96px] overflow-hidden bg-black/25 live-wire-vmask">
         <div className="live-wire-vscroll px-3 py-2 space-y-2">
           {doubled.map((item, i) => (
             <WireRow key={`${item.id}-${i}`} item={item} />
