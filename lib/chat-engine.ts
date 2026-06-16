@@ -7,6 +7,7 @@ import {
   defaultRivalFor,
   isRoastQuery,
   pickRoastLine,
+  pickRoastLines,
   teamFlag,
   teamName,
 } from "./rival-banter";
@@ -298,10 +299,11 @@ function greetingReply(prefs: UserPreferences): string {
 }
 
 function roastReply(prefs: UserPreferences): string {
-  const line = pickRoastLine(prefs.team, prefs.rivalTeam);
+  const lines = pickRoastLines(prefs.team, prefs.rivalTeam, 3);
   const my = teamName(prefs.team);
   const rival = teamName(prefs.rivalTeam);
-  return `**Rival report** · ${teamFlag(prefs.team)} ${my} vs ${teamFlag(prefs.rivalTeam)} ${rival}\n\n${line}\n\n${prefs.ownFansOnly ? "Your **Fans** filter is keeping you out of rival watch zones — chef's kiss." : "Toggle **Fans** if you want zero rival energy in the room."}\n\nWant a spot to match the smack talk? Ask *where to watch* and I'll pin it.`;
+  const body = lines.map((l) => `• ${l}`).join("\n");
+  return `**Rival report** · ${teamFlag(prefs.team)} ${my} vs ${teamFlag(prefs.rivalTeam)} ${rival}\n\n${body}\n\n${prefs.ownFansOnly ? "🛡️ **Fans** filter keeps you out of rival watch zones — chef's kiss." : "Toggle **Fans** if you want zero rival energy in the room."}\n\nWant a spot to match the smoke? Ask *where to watch* and I'll pin it on the map.`;
 }
 
 function buildWatchReply(
@@ -380,14 +382,14 @@ export function generateChatReply(
 
   if (kind === "greeting") {
     return {
-      reply: { id: uid(), role: "assistant", content: greetingReply(effectivePrefs) },
+      reply: { id: uid(), role: "assistant", content: greetingReply(prefs) },
       ranked: [],
     };
   }
 
   if (kind === "roast") {
     return {
-      reply: { id: uid(), role: "assistant", content: roastReply(effectivePrefs) },
+      reply: { id: uid(), role: "assistant", content: roastReply(prefs) },
       ranked: [],
     };
   }
@@ -457,7 +459,9 @@ export function generateChatReply(
 export const SUGGESTED_PROMPTS = [
   "Packed French bar — Fans only, no rivals",
   "Roast Senegal fans & find Les Bleus territory",
+  "Clown on Senegal — they're cooked tonight",
   "Absolute chaos watch party near MetLife",
+  "Trash talk my rival then pin a watch spot",
   "How do I get to MetLife without Penn Station?",
 ];
 

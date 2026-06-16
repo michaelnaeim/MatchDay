@@ -165,9 +165,9 @@ export default function HomePage() {
       </header>
 
       <main className="flex-1 flex flex-col min-h-0 w-full mx-auto px-2 sm:px-4 py-2">
-        <div className="flex-1 flex flex-col lg:grid lg:grid-cols-[minmax(0,36%)_minmax(0,64%)] gap-2 min-h-0 h-full rounded-2xl overflow-hidden border border-white/[0.06] bg-[#080a12]/50">
-          {/* Map — capped on mobile so chat panel gets most of the screen */}
-          <div className="h-[24vh] max-h-[220px] shrink-0 lg:h-full lg:max-h-none lg:min-h-0 flex flex-col p-1.5 sm:p-2">
+        <div className="flex-1 flex flex-col lg:grid lg:grid-cols-[minmax(0,38%)_minmax(0,62%)] gap-2 min-h-0 h-full rounded-2xl overflow-hidden border border-white/[0.06] bg-[#080a12]/50">
+          {/* Map — slightly taller on mobile; full height on desktop */}
+          <div className="h-[22vh] max-h-[210px] shrink-0 lg:h-full lg:max-h-none lg:min-h-0 flex flex-col p-1.5 sm:p-2">
             <MapPanel
               places={places}
               match={match}
@@ -183,12 +183,12 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Preferences + chat + live fan chat — chat row grows to fill */}
-          <div className="flex-1 min-h-0 grid grid-rows-[auto_minmax(0,1fr)_auto] gap-2 p-1.5 sm:p-2 border-t lg:border-t-0 lg:border-l border-white/[0.06] overflow-hidden">
-            <div className="shrink-0 max-h-[15vh] lg:max-h-[148px] overflow-y-auto rounded-xl border border-[#6366f1]/25 bg-[#0a0c14] shadow-[0_0_24px_rgba(99,102,241,0.1)] sidebar-scroll">
+          {/* Scroll the whole stack on mobile so prefs + guide + live chat are all reachable */}
+          <div className="flex-1 min-h-0 flex flex-col gap-2 p-1.5 sm:p-2 border-t lg:border-t-0 lg:border-l border-white/[0.06] overflow-y-auto lg:overflow-hidden sidebar-scroll">
+            <div className="shrink-0 rounded-xl border border-[#6366f1]/25 bg-[#0a0c14] shadow-[0_0_24px_rgba(99,102,241,0.1)]">
               <PreferenceSliders prefs={prefs} onChange={setPrefs} collapsed={false} />
             </div>
-            <div className="min-h-0 flex flex-col overflow-hidden">
+            <div className="shrink-0 min-h-[320px] lg:flex-1 lg:min-h-0 flex flex-col overflow-hidden">
               <ActiveFanGuide
                 messages={messages}
                 loading={chatLoading}

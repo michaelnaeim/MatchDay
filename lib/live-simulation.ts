@@ -81,6 +81,15 @@ const CHAT_POOL: Omit<LiveFanMessage, "id" | "ts">[] = [
   { user: "times_sq", avatar: "🌆", zone: "Times Square", text: "Mega screen crowd erupted on that goal", team: "neutral" },
   { user: "corona_miguel", avatar: "🇲🇽", zone: "Corona", text: "Saving seats for Mexico match later", team: "MEX" },
   { user: "french_touch", avatar: "🇫🇷", zone: "SoHo", text: "Wine bar turned full watch party", team: "FRA" },
+  { user: "harlem_hater", avatar: "🇫🇷", zone: "Yorkville", text: "Senegal fans still tweeting 'we're back' — the scoreboard disagrees 💀", team: "FRA" },
+  { user: "lion_clapback", avatar: "🇸🇳", zone: "Harlem", text: "French fans acting like the trophy's in the Uber already. Relax.", team: "SEN" },
+  { user: "secaucus_savage", avatar: "🔥", zone: "Secaucus", text: "Rival section meltdown on the big screen — popcorn worthy", team: "neutral" },
+  { user: "bedstuy_banter", avatar: "🦁", zone: "Bed-Stuy", text: "They said Les Bleus are 'different.' Different how? Different at conceding pressure.", team: "SEN" },
+  { user: "bleu_roast", avatar: "🇫🇷", zone: "Meadowlands", text: "Senegal fans brought drums. We brought a two-goal lead. Different instruments.", team: "FRA" },
+  { user: "reddit_troll", avatar: "👹", zone: "r/nyc", text: "Rival fans in shambles — thread is pure cope", team: "neutral" },
+  { user: "penn_banter", avatar: "😈", zone: "Penn", text: "Overheard rival fan asking if extra time is a refund policy", team: "neutral" },
+  { user: "nostrand_noise", avatar: "🇸🇳", zone: "Brooklyn", text: "French supporters lost in Brooklyn asking for 'a quiet bar' — wrong city buddy", team: "SEN" },
+  { user: "mbappe_troll", avatar: "⚡", zone: "MetLife", text: "Rival CB still recovering from that sprint — therapy not included", team: "FRA" },
 ];
 
 const PULSE_ZONES: LivePulseZone[] = [
