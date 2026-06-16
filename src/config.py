@@ -34,16 +34,18 @@ DEFAULT_STATE_CODE = "NY"
 DEFAULT_COUNTRY_CODE = "US"
 
 # FIFA-related keywords used across all clients
+# Intentionally excludes generic "soccer" / "football" to avoid noise
+# like field bookings ("Soccer - Non Regulation", etc.)
 FIFA_KEYWORDS: list[str] = [
     "FIFA",
     "World Cup",
-    "soccer",
-    "football",
-    "watch party",
-    "fan zone",
-    "fan fest",
+    "Fan Fest",
+    "Fan Zone",
+    "Watch Party",
     "FWC",
     "Copa Mundial",
+    "FWC26",
+    "FIFA26",
 ]
 
 

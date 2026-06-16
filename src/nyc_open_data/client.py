@@ -9,7 +9,7 @@ No API key required, but an app token gives higher rate limits.
 from __future__ import annotations
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from typing import Any
 
 import requests
@@ -146,12 +146,12 @@ class NYCOpenDataClient:
         """Normalize a raw NYC Open Data event dict into a unified Event."""
         event_id = str(raw.get("event_id", ""))
 
-        # Parse dates
+        # Parse dates — NYC times are US/Eastern, make them tz-aware
         start_str = raw.get("start_date_time", "")
-        start_time = datetime.fromisoformat(start_str) if start_str else datetime.min
+        start_time = _parse_nyc_datetime(start_str) if start_str else datetime.min.replace(tzinfo=timezone.utc)
 
         end_str = raw.get("end_date_time", "")
-        end_time = datetime.fromisoformat(end_str) if end_str else None
+        end_time = _parse_nyc_datetime(end_str) if end_str else None
 
         # Category
         raw_type = raw.get("event_type", "")
@@ -180,3 +180,19 @@ class NYCOpenDataClient:
             image_url=None,
             raw=raw,
         )
+
+
+# --------------------------------------------------------------------------
+# Utility
+# --------------------------------------------------------------------------
+
+# US/Eastern offset (EDT = UTC-4, EST = UTC-5). Using EDT for summer.
+_EDT = timezone(timedelta(hours=-4))
+
+
+def _parse_nyc_datetime(dt_str: str) -> datetime:
+    """Parse an NYC Open Data datetime string as US/Eastern tz-aware."""
+    dt = datetime.fromisoformat(dt_str)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=_EDT)
+    return dt
