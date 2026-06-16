@@ -103,7 +103,7 @@ export default function LiveWire({ feed, teamCode }: LiveWireProps) {
         </span>
       </div>
 
-      <div className="relative h-[96px] overflow-hidden bg-black/25 live-wire-vmask">
+      <div className="relative h-[80px] overflow-hidden bg-black/25 live-wire-vmask">
         <div className="live-wire-vscroll px-3 py-2 space-y-2">
           {doubled.map((item, i) => (
             <WireRow key={`${item.id}-${i}`} item={item} />
