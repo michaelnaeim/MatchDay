@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* shadcn-style tokens consumed by tailwind.config (backend WIP components).
+   Defined here so `hsl(var(--*))` color utilities resolve; the premium body
+   background below is intentionally kept (do not let these override it). */
+@layer base {
+  :root {
+    --background: 222 47% 7%;
+    --foreground: 210 40% 98%;
+    --card: 222 40% 11%;
+    --card-foreground: 210 40% 98%;
+    --primary: 221 83% 60%;
+    --primary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --border: 217 33% 20%;
+    --input: 217 33% 20%;
+    --ring: 221 83% 60%;
+    --radius: 0.75rem;
+  }
+}
+
+:root {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --premium-gold: #f5c518;
+  --premium-live: #ff3b30;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply antialiased text-white;
+  background-color: #050508;
+  background-image:
+    radial-gradient(ellipse 70% 45% at 20% -5%, rgba(37, 99, 235, 0.14), transparent),
+    radial-gradient(ellipse 60% 40% at 85% 0%, rgba(22, 163, 74, 0.1), transparent),
+    radial-gradient(ellipse 50% 30% at 50% 100%, rgba(99, 102, 241, 0.08), transparent);
+}
+
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: #0a0c14;
+}
+
+.leaflet-popup-content-wrapper {
+  @apply rounded-xl border border-white/10 bg-[#111827] shadow-panel;
+}
+
+.leaflet-popup-content {
+  margin: 12px 14px;
+  color: #f0f0f0;
+}
+
+.leaflet-popup-tip {
+  background: #111827;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+.chat-fade-in-fast {
+  animation: chatFadeIn 0.12s ease-out;
+}
+
+@keyframes chatFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.heat-pulse-wrap,
+.live-ping-wrap,
+.stadium-pin-wrap {
+  background: transparent !important;
+  border: none !important;
+}
+
+.map-heat-pulse {
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--pulse-color) 0%, transparent 68%);
+  animation: mapHeatPulse 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.map-heat-surge {
+  animation-duration: 1.6s;
+}
+
+@keyframes mapHeatPulse {
+  0%,
+  100% {
+    transform: scale(0.88);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.28;
+  }
+}
+
+.stadium-pin-active {
+  animation: stadiumPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes stadiumPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(245, 197, 24, 0.7));
+  }
+  50% {
+    transform: scale(1.12);
+    filter: drop-shadow(0 0 20px rgba(245, 197, 24, 1));
+  }
+}
+
+.live-wire-track {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.live-wire-card {
+  animation: wireSlide 0.35s ease-out;
+}
+
+@keyframes wireSlide {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.live-wire-fire {
+  position: relative;
+}
+
+.live-wire-fire-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 53, 0.14) 0%,
+    rgba(245, 197, 24, 0.1) 40%,
+    rgba(99, 102, 241, 0.12) 100%
+  );
+  pointer-events: none;
+  animation: wireGlow 4s ease-in-out infinite;
+}
+
+@keyframes wireGlow {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(90deg, transparent, black 3%, black 97%, transparent);
+}
+
+.live-wire-vscroll {
+  animation: wireScrollUp 28s linear infinite;
+}
+
+.live-wire-vscroll:hover {
+  animation-play-state: paused;
+}
+
+.live-wire-vmask {
+  mask-image: linear-gradient(180deg, transparent, black 8%, black 92%, transparent);
+}
+
+@keyframes wireScrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.live-wire-row {
+  transition: border-color 0.2s;
+}
+
+.live-wire-row:hover {
+  border-color: rgba(245, 197, 24, 0.25);
+}
+
+.split-divider {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(99, 102, 241, 0.35) 50%,
+    transparent
+  );
+}
+
+input[type="range"] {
+  accent-color: #6366f1;
+}

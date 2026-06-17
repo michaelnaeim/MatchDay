@@ -1,0 +1,52 @@
+[
+  {
+    "id": "m_fra_mex_0616",
+    "homeTeam": "FRA",
+    "awayTeam": "MEX",
+    "venueName": "MetLife Stadium",
+    "venue": { "lat": 40.8128, "lng": -74.0742 },
+    "kickoff": "2026-06-16T16:00:00-04:00",
+    "stage": "Group Stage",
+    "city": "East Rutherford, NJ"
+  },
+  {
+    "id": "m_bra_eng_0616",
+    "homeTeam": "BRA",
+    "awayTeam": "ENG",
+    "venueName": "MetLife Stadium",
+    "venue": { "lat": 40.8128, "lng": -74.0742 },
+    "kickoff": "2026-06-16T20:00:00-04:00",
+    "stage": "Group Stage",
+    "city": "East Rutherford, NJ"
+  },
+  {
+    "id": "m_sen_mex_0622",
+    "homeTeam": "SEN",
+    "awayTeam": "MEX",
+    "venueName": "MetLife Stadium",
+    "venue": { "lat": 40.8128, "lng": -74.0742 },
+    "kickoff": "2026-06-22T15:00:00-04:00",
+    "stage": "Group Stage",
+    "city": "East Rutherford, NJ"
+  },
+  {
+    "id": "m_fra_eng_0625",
+    "homeTeam": "FRA",
+    "awayTeam": "ENG",
+    "venueName": "MetLife Stadium",
+    "venue": { "lat": 40.8128, "lng": -74.0742 },
+    "kickoff": "2026-06-25T18:00:00-04:00",
+    "stage": "Group Stage",
+    "city": "East Rutherford, NJ"
+  },
+  {
+    "id": "m_bra_sen_0627",
+    "homeTeam": "BRA",
+    "awayTeam": "SEN",
+    "venueName": "MetLife Stadium",
+    "venue": { "lat": 40.8128, "lng": -74.0742 },
+    "kickoff": "2026-06-27T21:00:00-04:00",
+    "stage": "Round of 32",
+    "city": "East Rutherford, NJ"
+  }
+]

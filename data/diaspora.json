@@ -1,0 +1,12 @@
+[
+  { "id": "d_fra_westvillage", "team": "FRA", "neighborhood": "West Village / SoHo", "center": { "lat": 40.7285, "lng": -74.0035 }, "density": 0.6, "radiusKm": 2.0 },
+  { "id": "d_fra_bpc", "team": "FRA", "neighborhood": "Battery Park City", "center": { "lat": 40.7128, "lng": -74.0157 }, "density": 0.4, "radiusKm": 1.2 },
+  { "id": "d_sen_harlem", "team": "SEN", "neighborhood": "Little Senegal, Harlem", "center": { "lat": 40.8016, "lng": -73.9522 }, "density": 0.9, "radiusKm": 1.5 },
+  { "id": "d_sen_bedstuy", "team": "SEN", "neighborhood": "Bedford-Stuyvesant", "center": { "lat": 40.6849, "lng": -73.9501 }, "density": 0.55, "radiusKm": 2.0 },
+  { "id": "d_bra_littlebrazil", "team": "BRA", "neighborhood": "Little Brazil, Midtown", "center": { "lat": 40.7570, "lng": -73.9831 }, "density": 0.55, "radiusKm": 0.8 },
+  { "id": "d_bra_ironbound", "team": "BRA", "neighborhood": "Ironbound, Newark", "center": { "lat": 40.7320, "lng": -74.1600 }, "density": 0.95, "radiusKm": 2.5 },
+  { "id": "d_eng_midtown", "team": "ENG", "neighborhood": "Midtown expat pubs", "center": { "lat": 40.7480, "lng": -73.9890 }, "density": 0.5, "radiusKm": 1.6 },
+  { "id": "d_mex_jacksonheights", "team": "MEX", "neighborhood": "Jackson Heights", "center": { "lat": 40.7475, "lng": -73.8830 }, "density": 0.9, "radiusKm": 2.5 },
+  { "id": "d_mex_sunsetpark", "team": "MEX", "neighborhood": "Sunset Park", "center": { "lat": 40.6452, "lng": -74.0102 }, "density": 0.85, "radiusKm": 2.0 },
+  { "id": "d_mex_eastharlem", "team": "MEX", "neighborhood": "East Harlem", "center": { "lat": 40.7930, "lng": -73.9400 }, "density": 0.65, "radiusKm": 1.5 }
+]

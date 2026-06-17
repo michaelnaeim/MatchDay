@@ -1,0 +1,7 @@
+[
+  { "code": "FRA", "name": "France", "flag": "🇫🇷", "commentaryLanguages": ["French", "English"] },
+  { "code": "SEN", "name": "Senegal", "flag": "🇸🇳", "commentaryLanguages": ["French", "Wolof", "English"] },
+  { "code": "BRA", "name": "Brazil", "flag": "🇧🇷", "commentaryLanguages": ["Portuguese", "English"] },
+  { "code": "ENG", "name": "England", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "commentaryLanguages": ["English"] },
+  { "code": "MEX", "name": "Mexico", "flag": "🇲🇽", "commentaryLanguages": ["Spanish", "English"] }
+]
