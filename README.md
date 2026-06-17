@@ -1,3 +1,5 @@
+##Mira x Kira Hackathon
+
 # Matchday — World Cup 2026 Fan Travel Planner
 
 A fan enters their **team**, **location**, and **intent**, and gets back a
